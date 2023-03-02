@@ -218,7 +218,7 @@ express-yaschema-api-handler@^1.0.4:
     yaschema-api "^2.0.0"
 
 express-yaschema-ws-api-handler@../:
-  version "0.0.0-alpha.2"
+  version "0.0.0-alpha.3"
   dependencies:
     express-ws "^5.0.2"
     uuid "^9.0.0"

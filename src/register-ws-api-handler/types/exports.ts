@@ -5,4 +5,5 @@ export * from './WsApiEventHandlers';
 export * from './WsApiMessagReceiptHandler';
 export * from './WsApiRequestHandler';
 export * from './WsApiRequestHandlers';
+export * from './WsApiRequestHandlerWithExtraArgs';
 export * from './WsApiResponders';
