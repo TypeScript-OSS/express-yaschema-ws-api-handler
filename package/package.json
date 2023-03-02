@@ -1,6 +1,6 @@
 {
   "name": "express-yaschema-ws-api-handler",
-  "version": "0.0.0-alpha.4",
+  "version": "0.0.0-alpha.5",
   "description": "Express handler support for yaschema-ws-api",
   "keywords": [
     "schema",
@@ -21,7 +21,7 @@
     "clean": "trash coverage dev-build docs lib",
     "generate:docs": "npx typedoc src/index.ts --out ../docs",
     "lint": "eslint 'src/**/*.ts?(x)' --max-warnings 0",
-    "prepublishOnly": "yarn clean && yarn test && yarn lint && yarn test:audit && yarn clean && yarn build && yarn generate:docs",
+    "prepublishOnly": "yarn clean && yarn test && yarn lint && yarn test:audit && yarn clean && cp ./README.md ../ && yarn build && yarn generate:docs",
     "test": "yarn test:check-circular-dependencies && yarn test:unit-tests",
     "test:audit": "yarn audit --level moderate; [[ $? -ge 4 ]] && exit 1 || exit 0",
     "test:check-circular-dependencies": "yarn build && npx madge --circular ./lib",
