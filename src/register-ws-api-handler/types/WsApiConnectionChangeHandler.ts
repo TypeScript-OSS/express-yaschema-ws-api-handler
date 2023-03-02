@@ -8,5 +8,6 @@ export type WsApiConnectionChangeHandler<QueryT extends AnyQuery> = (args: {
     req: Request;
     next: NextFunction;
   };
+  connectionId: string;
   query: QueryT;
 }) => Promise<void>;

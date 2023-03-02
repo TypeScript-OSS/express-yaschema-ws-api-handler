@@ -1,5 +1,6 @@
 import type { Express, NextFunction, Request } from 'express';
 import type { WithWebsocketMethod } from 'express-ws';
+import { v4 as uuid } from 'uuid';
 import type WebSocket from 'ws';
 import type { Schema, ValidationMode } from 'yaschema';
 import { schema } from 'yaschema';
@@ -56,6 +57,7 @@ export const registerWsApiHandler = <
 ) => {
   const expressWsHandler = async (ws: WebSocket, req: Request, next: NextFunction) => {
     const express = { ws, req, next };
+    const connectionId = uuid();
 
     const reqQuery = await (api.schemas.connection?.query ?? anyReqQuerySchema).deserializeAsync(req.query, {
       validation: requestValidationMode
@@ -88,11 +90,11 @@ export const registerWsApiHandler = <
       ws.off('open', onOpen);
       ws.off('message', onMessage);
 
-      await eventHandlers.onDisconnect?.({ express, query });
+      await eventHandlers.onDisconnect?.({ express, connectionId, query });
     };
 
     const onOpen = async (_code: number, _reason: string) => {
-      await eventHandlers.onConnect?.({ express, query });
+      await eventHandlers.onConnect?.({ express, connectionId, query });
     };
 
     const output = (Object.entries(api.schemas.responses) as Array<[keyof ResponseCommandsT & string, Schema]>).reduce(
@@ -132,7 +134,7 @@ export const registerWsApiHandler = <
     const wrappedRequestHandlers: Partial<WsApiRequestHandlers<RequestCommandsT, ResponseCommandsT, QueryT>> = {};
 
     const onMessage = async (data: WebSocket.Data) => {
-      eventHandlers.onMessage?.({ express, query, message: data });
+      eventHandlers.onMessage?.({ express, connectionId, query, message: data });
 
       if (typeof data !== 'string') {
         return;
@@ -144,21 +146,26 @@ export const registerWsApiHandler = <
         json = JSON.parse(data);
       } catch (e) {
         if (e instanceof Error) {
-          eventHandlers.onError?.({ express, query, error: e });
+          eventHandlers.onError?.({ express, connectionId, query, error: e });
         }
         return;
       }
 
       const genericRequest = genericCommandSchema.deserialize(json, { okToMutateInputValue: true, validation: 'hard' });
       if (genericRequest.error !== undefined) {
-        eventHandlers.onError?.({ express, query, error: new Error(genericRequest.error) });
+        eventHandlers.onError?.({ express, connectionId, query, error: new Error(genericRequest.error) });
         return;
       }
 
       const requestCommandName = genericRequest.deserialized.command as keyof RequestCommandsT & string;
       const requestCommand = api.schemas.requests[requestCommandName];
       if (requestCommand === undefined) {
-        eventHandlers.onError?.({ express, query, error: new Error(`No definition found for command ${requestCommandName}`) });
+        eventHandlers.onError?.({
+          express,
+          connectionId,
+          query,
+          error: new Error(`No definition found for command ${requestCommandName}`)
+        });
         return;
       }
 
@@ -167,7 +174,12 @@ export const registerWsApiHandler = <
       if (wrappedRequestHandler === undefined) {
         const requestHandler = requestHandlers[requestCommandName];
         if (requestHandler === undefined) {
-          eventHandlers.onError?.({ express, query, error: new Error(`No request handler found for command ${requestCommandName}`) });
+          eventHandlers.onError?.({
+            express,
+            connectionId,
+            query,
+            error: new Error(`No request handler found for command ${requestCommandName}`)
+          });
           return;
         }
 
@@ -200,6 +212,7 @@ export const registerWsApiHandler = <
 
       await wrappedRequestHandler({
         express,
+        connectionId,
         query,
         input: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
         output

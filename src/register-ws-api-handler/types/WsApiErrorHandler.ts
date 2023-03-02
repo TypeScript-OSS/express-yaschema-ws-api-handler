@@ -8,6 +8,7 @@ export type WsApiErrorHandler<QueryT extends AnyQuery> = (args: {
     req: Request;
     next: NextFunction;
   };
+  connectionId: string;
   query: QueryT;
   error: Error;
 }) => Promise<void>;

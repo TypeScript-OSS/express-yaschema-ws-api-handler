@@ -8,6 +8,7 @@ export type WsApiMessageReceiptHandler<QueryT extends AnyQuery> = (args: {
     req: Request;
     next: NextFunction;
   };
+  connectionId: string;
   query: QueryT;
   message: WebSocket.Data;
 }) => Promise<void>;

@@ -15,6 +15,7 @@ export type WsApiRequestHandler<
     req: Request;
     next: NextFunction;
   };
+  connectionId: string;
   query: QueryT;
   input: RequestCommandsT[CommandNameT]['valueType'];
   output: WsApiResponders<ResponseCommandsT>;

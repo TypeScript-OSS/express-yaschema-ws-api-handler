@@ -1,6 +1,6 @@
 {
   "name": "express-yaschema-ws-api-handler",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.2",
   "description": "Express handler support for yaschema-ws-api",
   "keywords": [
     "schema",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "express-ws": "^5.0.2",
+    "uuid": "^9.0.0",
     "yaschema": "^2.0.2",
     "yaschema-api": "^2.0.1",
     "yaschema-ws-api": "0.0.0-alpha.0"
@@ -39,6 +40,7 @@
     "@types/express-ws": "^3.0.1",
     "@types/jest": "^29.4.0",
     "@types/lodash": "4.14.191",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "8.33.0",
