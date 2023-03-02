@@ -24,7 +24,8 @@
     "cause-validation-error": "curl -i 'http://localhost:8080/ping' --header 'Content-Type: application/json' --request POST --data '{ \"echo\": 3.14 }' && echo",
     "check-array-query": "curl -i 'http://localhost:8080/array-query?values[]=one&values[]=2&values[]=true' --header 'Content-Type: application/json' --request GET && echo",
     "ping": "curl -i 'http://localhost:8080/ping' --header 'Content-Type: application/json' --request POST --data '{ \"echo\": \"Hello World\" }' && echo",
-    "start": "node ./bin"
+    "start": "node ./bin",
+    "upgrade-parent-package": "yarn upgrade --latest express-yaschema-ws-api-handler"
   },
   "version": "1.0.0"
 }

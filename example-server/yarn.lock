@@ -218,11 +218,12 @@ express-yaschema-api-handler@^1.0.4:
     yaschema-api "^2.0.0"
 
 express-yaschema-ws-api-handler@../:
-  version "0.0.0-alpha.0"
+  version "0.0.0-alpha.2"
   dependencies:
     express-ws "^5.0.2"
+    uuid "^9.0.0"
     yaschema "^2.0.2"
-    yaschema-api "^2.0.0"
+    yaschema-api "^2.0.1"
     yaschema-ws-api "0.0.0-alpha.0"
 
 express@^4.18.2:
@@ -544,6 +545,11 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
 
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
+
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
@@ -554,10 +560,10 @@ ws@^7.4.6:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
 
-yaschema-api@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/yaschema-api/-/yaschema-api-2.0.0.tgz#951254bca0f26dbea1f7620fb4e4df61c7190c86"
-  integrity sha512-zbkfOf0sQgKktxJbdH4kZD8+6hmzZiheZBkaj1Kk5/7vc5GOUdA0CSuTGV/5JRITB5Rswpi9RJHcBy0/lZTrwQ==
+yaschema-api@^2.0.0, yaschema-api@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/yaschema-api/-/yaschema-api-2.0.1.tgz#923ffcbe46a8af0fc8bc2e887d9e5825269185bd"
+  integrity sha512-RsdhMDWVR1OlF2yLXb/f8mN8HA/lZcZp97B8I2A91WQelQ9QR2w1bAfDhuVol6j3PFjMJpN+iTcz4YS1HkD1Ow==
   dependencies:
     yaschema "^2.0.2"
 

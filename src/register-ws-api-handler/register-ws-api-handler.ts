@@ -14,9 +14,7 @@ import { getDefaultRequestValidationMode, getDefaultResponseValidationMode } fro
 import { getWsApiHandlerWrapper } from '../config/ws-api-handler-wrapper';
 import { getUrlPathnameUsingRouteType } from '../internal-utils/get-url-pathname';
 import type { GenericWsApiRequestHandler } from './types/GenericWsApiRequestHandler';
-import type { WsApiConnectionChangeHandler } from './types/WsApiConnectionChangeHandler';
-import type { WsApiErrorHandler } from './types/WsApiErrorHandler';
-import type { WsApiMessageReceiptHandler } from './types/WsApiMessagReceiptHandler';
+import type { WsApiEventHandlers } from './types/WsApiEventHandlers';
 import type { WsApiRequestHandler } from './types/WsApiRequestHandler';
 import type { WsApiRequestHandlers } from './types/WsApiRequestHandlers';
 import type { WsApiResponders } from './types/WsApiResponders';
@@ -48,12 +46,7 @@ export const registerWsApiHandler = <
     responseValidationMode = getDefaultResponseValidationMode()
   }: WsApiHandlerOptions,
   requestHandlers: WsApiRequestHandlers<RequestCommandsT, ResponseCommandsT, QueryT>,
-  eventHandlers: {
-    onConnect?: WsApiConnectionChangeHandler<QueryT>;
-    onDisconnect?: WsApiConnectionChangeHandler<QueryT>;
-    onMessage?: WsApiMessageReceiptHandler<QueryT>;
-    onError?: WsApiErrorHandler<QueryT>;
-  } = {}
+  eventHandlers: WsApiEventHandlers<QueryT> = {}
 ) => {
   const expressWsHandler = async (ws: WebSocket, req: Request, next: NextFunction) => {
     const express = { ws, req, next };
