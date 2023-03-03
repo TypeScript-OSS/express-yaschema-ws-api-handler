@@ -4,7 +4,7 @@ import type { AnyCommands, AnyQuery } from 'yaschema-ws-api';
 
 import type { WsApiResponders } from './WsApiResponders';
 
-export type WsApiErrorHandler<ResponseCommandsT extends AnyCommands, QueryT extends AnyQuery> = (args: {
+export type WsApiMessageReceiptHandler<ResponseCommandsT extends AnyCommands, QueryT extends AnyQuery> = (args: {
   express: {
     ws: WebSocket;
     req: Request;
@@ -12,6 +12,6 @@ export type WsApiErrorHandler<ResponseCommandsT extends AnyCommands, QueryT exte
   };
   connectionId: string;
   query: QueryT;
-  error: Error;
+  message: WebSocket.Data;
   output: WsApiResponders<ResponseCommandsT>;
 }) => Promise<void>;

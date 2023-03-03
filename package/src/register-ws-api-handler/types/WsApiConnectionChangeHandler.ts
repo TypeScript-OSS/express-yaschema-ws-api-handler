@@ -1,8 +1,10 @@
 import type { NextFunction, Request } from 'express';
 import type WebSocket from 'ws';
-import type { AnyQuery } from 'yaschema-ws-api';
+import type { AnyCommands, AnyQuery } from 'yaschema-ws-api';
 
-export type WsApiConnectionChangeHandler<QueryT extends AnyQuery> = (args: {
+import type { WsApiResponders } from './WsApiResponders';
+
+export type WsApiConnectionChangeHandler<ResponseCommandsT extends AnyCommands, QueryT extends AnyQuery> = (args: {
   express: {
     ws: WebSocket;
     req: Request;
@@ -10,4 +12,6 @@ export type WsApiConnectionChangeHandler<QueryT extends AnyQuery> = (args: {
   };
   connectionId: string;
   query: QueryT;
+  /** Though output is passed to `onDisconnect` callbacks, its use will be ignored */
+  output: WsApiResponders<ResponseCommandsT>;
 }) => Promise<void>;

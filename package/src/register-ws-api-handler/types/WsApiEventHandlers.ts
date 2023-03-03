@@ -1,12 +1,12 @@
-import type { AnyQuery } from 'yaschema-ws-api';
+import type { AnyCommands, AnyQuery } from 'yaschema-ws-api';
 
 import type { WsApiConnectionChangeHandler } from './WsApiConnectionChangeHandler';
 import type { WsApiErrorHandler } from './WsApiErrorHandler';
-import type { WsApiMessageReceiptHandler } from './WsApiMessagReceiptHandler';
+import type { WsApiMessageReceiptHandler } from './WsApiMessageReceiptHandler';
 
-export interface WsApiEventHandlers<QueryT extends AnyQuery> {
-  onConnect?: WsApiConnectionChangeHandler<QueryT>;
-  onDisconnect?: WsApiConnectionChangeHandler<QueryT>;
-  onMessage?: WsApiMessageReceiptHandler<QueryT>;
-  onError?: WsApiErrorHandler<QueryT>;
+export interface WsApiEventHandlers<ResponseCommandsT extends AnyCommands, QueryT extends AnyQuery> {
+  onConnect?: WsApiConnectionChangeHandler<ResponseCommandsT, QueryT>;
+  onDisconnect?: WsApiConnectionChangeHandler<ResponseCommandsT, QueryT>;
+  onMessage?: WsApiMessageReceiptHandler<ResponseCommandsT, QueryT>;
+  onError?: WsApiErrorHandler<ResponseCommandsT, QueryT>;
 }
