@@ -80,14 +80,9 @@ export const registerWsApiHandler = <
     const onClose = async (_code: number, _reason: string) => {
       ws.off('error', onError);
       ws.off('close', onClose);
-      ws.off('open', onOpen);
       ws.off('message', onMessage);
 
       await eventHandlers.onDisconnect?.({ express, connectionId, query, output });
-    };
-
-    const onOpen = async (_code: number, _reason: string) => {
-      await eventHandlers.onConnect?.({ express, connectionId, query, output });
     };
 
     const output = (Object.entries(api.schemas.responses) as Array<[keyof ResponseCommandsT & string, Schema]>).reduce(
@@ -219,9 +214,10 @@ export const registerWsApiHandler = <
       });
     };
 
+    await eventHandlers.onConnect?.({ express, connectionId, query, output });
+
     ws.on('error', onError);
     ws.on('close', onClose);
-    ws.on('open', onOpen);
     ws.on('message', onMessage);
   };
 
