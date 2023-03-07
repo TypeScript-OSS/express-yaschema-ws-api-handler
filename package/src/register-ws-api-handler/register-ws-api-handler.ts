@@ -210,7 +210,8 @@ export const registerWsApiHandler = <
         connectionId,
         query,
         input: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
-        output
+        output,
+        extras: {}
       });
     };
 

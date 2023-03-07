@@ -8,7 +8,8 @@ export type WsApiRequestHandler<
   RequestCommandsT extends AnyCommands,
   ResponseCommandsT extends AnyCommands,
   CommandNameT extends keyof RequestCommandsT & string,
-  QueryT extends AnyQuery
+  QueryT extends AnyQuery,
+  ExtraArgsT extends Record<string, any> = Record<string, never>
 > = (args: {
   express: {
     ws: WebSocket;
@@ -19,4 +20,5 @@ export type WsApiRequestHandler<
   query: QueryT;
   input: RequestCommandsT[CommandNameT]['valueType'];
   output: WsApiResponders<ResponseCommandsT>;
+  extras: ExtraArgsT;
 }) => Promise<void>;
