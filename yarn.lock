@@ -2458,17 +2458,6 @@ express-yaschema-api-handler@^1.0.4:
     yaschema "^2.0.2"
     yaschema-api "^2.0.2"
 
-express-yaschema-ws-api-handler@0.0.0-alpha.7:
-  version "0.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/express-yaschema-ws-api-handler/-/express-yaschema-ws-api-handler-0.0.0-alpha.7.tgz#02f7018371d38777421e12fc80105767319fc682"
-  integrity sha512-rvvWNQA5aLT7VO9IQPkXHH/7JPtisi7Lk7FtkYs8dGCc6rEqN3u6Q0QK9WSUWehzvi0pUQXCROEsA6R1/+PeGA==
-  dependencies:
-    express-ws "^5.0.2"
-    uuid "^9.0.0"
-    yaschema "^2.0.2"
-    yaschema-api "^2.0.2"
-    yaschema-ws-api "0.0.0-alpha.0"
-
 express@^4.18.2:
   version "4.18.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.2.tgz#3fabe08296e930c796c19e3c516979386ba9fd59"
@@ -5782,13 +5771,6 @@ yaschema-ws-api-client@^1.0.0:
     yaschema "^2.0.2"
     yaschema-api "^2.0.2"
     yaschema-ws-api "^1.0.0"
-
-yaschema-ws-api@0.0.0-alpha.0:
-  version "0.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/yaschema-ws-api/-/yaschema-ws-api-0.0.0-alpha.0.tgz#0e09a4937364b625adf02cb3f3ff243c493ea110"
-  integrity sha512-NFXrNWgAeTxqMjK1B+1Y9iLLNcUGxHR8DtmN8rmMty8HFtc5y0Ql3yS2JphOwXHL0qqHXymL3eL/bobU7sUohg==
-  dependencies:
-    yaschema "^2.0.2"
 
 yaschema-ws-api@^1.0.0:
   version "1.0.0"
