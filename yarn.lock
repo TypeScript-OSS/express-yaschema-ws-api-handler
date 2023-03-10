@@ -5774,19 +5774,26 @@ yaschema-api@^2.0.2:
   dependencies:
     yaschema "^2.0.2"
 
-yaschema-ws-api-client@^0.0.0-alpha.0:
-  version "0.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/yaschema-ws-api-client/-/yaschema-ws-api-client-0.0.0-alpha.0.tgz#36376a3dc1ba789d2d739f4f3c7b365b0abdcb7c"
-  integrity sha512-ckMwZfLBMQiCgbegQUVWOf1oJ5x2E7Vbtzam/WzH9zNcZ2Rjnn3waXY1gcWLeL+Xq5yaV0DbcuNsxMm7iN3C8g==
+yaschema-ws-api-client@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/yaschema-ws-api-client/-/yaschema-ws-api-client-1.0.0.tgz#3ef463354cf7ead9c3e7c6e86d04d5c1fc9c61d7"
+  integrity sha512-Yg7qCTPCv4zeCRMZ7tdK43im/0r7q3eNy5ONcUDFXC3IsE/lLLnUl6q91B2zLraumxj8e1Pw7mU1p/L/yP0VGg==
   dependencies:
     yaschema "^2.0.2"
     yaschema-api "^2.0.2"
-    yaschema-ws-api "0.0.0-alpha.0"
+    yaschema-ws-api "^1.0.0"
 
 yaschema-ws-api@0.0.0-alpha.0:
   version "0.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/yaschema-ws-api/-/yaschema-ws-api-0.0.0-alpha.0.tgz#0e09a4937364b625adf02cb3f3ff243c493ea110"
   integrity sha512-NFXrNWgAeTxqMjK1B+1Y9iLLNcUGxHR8DtmN8rmMty8HFtc5y0Ql3yS2JphOwXHL0qqHXymL3eL/bobU7sUohg==
+  dependencies:
+    yaschema "^2.0.2"
+
+yaschema-ws-api@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/yaschema-ws-api/-/yaschema-ws-api-1.0.0.tgz#53466de6306efcde4d4edd190093cb71afed063e"
+  integrity sha512-BXk+kvikvTu98M/FR+XrqLpfdxOL/RwvZcOv5MK+fVc/o99/ud+Uexw3yQISqwzALrXC127NL3CsCJ+fuvlRnA==
   dependencies:
     yaschema "^2.0.2"
 

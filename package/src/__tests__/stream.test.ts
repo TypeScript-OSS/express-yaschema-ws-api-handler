@@ -1,13 +1,16 @@
+import { waitFor } from '@testing-library/react';
 import bodyParser from 'body-parser';
 import express from 'express';
-import expressWs, { WithWebsocketMethod } from 'express-ws';
+import type { WithWebsocketMethod } from 'express-ws';
+import expressWs from 'express-ws';
 import type * as http from 'http';
-import { waitFor } from '@testing-library/react';
 import WebSocket from 'ws';
 import { schema } from 'yaschema';
 import { setDefaultUrlBase, setUrlBaseForRouteType } from 'yaschema-api';
 import { makeWsApi } from 'yaschema-ws-api';
-import { apiWs, CommonWebSocket, setWebSocket } from 'yaschema-ws-api-client';
+import type { CommonWebSocket } from 'yaschema-ws-api-client';
+import { apiWs, setWebSocket } from 'yaschema-ws-api-client';
+
 import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler';
 
 const port = Number.parseInt(process.env.PORT ?? '8088');
@@ -96,7 +99,7 @@ describe('Stream', () => {
   it('should work', async () => {
     const got: string[] = [];
     let markConnected: () => void;
-    const isConnected = new Promise<void>(async (resolve) => {
+    const isConnected = new Promise<void>((resolve) => {
       markConnected = resolve;
     });
     const connection = await apiWs(
