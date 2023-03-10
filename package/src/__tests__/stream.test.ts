@@ -1,0 +1,136 @@
+import bodyParser from 'body-parser';
+import express from 'express';
+import expressWs, { WithWebsocketMethod } from 'express-ws';
+import type * as http from 'http';
+import { waitFor } from '@testing-library/react';
+import WebSocket from 'ws';
+import { schema } from 'yaschema';
+import { setDefaultUrlBase, setUrlBaseForRouteType } from 'yaschema-api';
+import { makeWsApi } from 'yaschema-ws-api';
+import { apiWs, CommonWebSocket, setWebSocket } from 'yaschema-ws-api-client';
+import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler';
+
+const port = Number.parseInt(process.env.PORT ?? '8088');
+
+export const stream = makeWsApi({
+  routeType: 'stream',
+  url: '/stream',
+  schemas: {
+    requests: {
+      ping: schema.object({ echo: schema.string().allowEmptyString().optional() }).optional(),
+      hello: schema.any().optional()
+    },
+    responses: {
+      pong: schema.object({
+        body: schema.string()
+      }),
+      hello: schema.object({
+        body: schema.string()
+      })
+    }
+  }
+});
+
+describe('Stream', () => {
+  let server: http.Server | undefined;
+
+  beforeAll(
+    async () =>
+      new Promise<void>((resolve, reject) => {
+        const app = express();
+
+        app.use(bodyParser.json({ type: 'application/json' }));
+
+        expressWs(app);
+        const appWithWs = app as typeof app & WithWebsocketMethod;
+
+        registerWsApiHandler(
+          appWithWs,
+          stream,
+          {},
+          {
+            ping: async ({ express, input, output }) => {
+              console.log('New ping request with query:', express.req.query, 'and params:', express.req.params);
+
+              output.pong({ body: `PONG${(input?.echo?.length ?? 0) > 0 ? ' ' : ''}${input?.echo ?? ''}` });
+            },
+            hello: async ({ output }) => output.hello({ body: 'world' })
+          }
+        );
+
+        try {
+          server = app.listen(port, () => {
+            console.log(`Example app listening on port ${port}`);
+
+            resolve();
+          });
+        } catch (e) {
+          reject(e);
+        }
+      })
+  );
+
+  beforeAll(() => {
+    setDefaultUrlBase(`http://localhost:${port}`);
+    setUrlBaseForRouteType('stream', `ws://localhost:${port}`);
+    setWebSocket(WebSocket as any as CommonWebSocket);
+  });
+
+  afterAll(
+    async () =>
+      new Promise<void>((resolve, reject) => {
+        if (server === undefined) {
+          return resolve();
+        }
+
+        server.close((error) => {
+          if (error !== undefined) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        });
+      })
+  );
+
+  it('should work', async () => {
+    const got: string[] = [];
+    let markConnected: () => void;
+    const isConnected = new Promise<void>(async (resolve) => {
+      markConnected = resolve;
+    });
+    const connection = await apiWs(
+      stream,
+      {},
+      {
+        hello: async ({ input }) => {
+          got.push(`hello response: ${input.body}`);
+        },
+        pong: async ({ input }) => {
+          got.push(`pong response: ${input.body}`);
+        }
+      },
+      {
+        onConnect: async () => {
+          markConnected();
+        }
+      }
+    );
+
+    try {
+      await isConnected;
+
+      expect(connection.ws.readyState).toBe(WebSocket.OPEN);
+
+      await connection.output.hello('test');
+      await waitFor(() => expect(got[got.length - 1]).toBe('hello response: world'));
+
+      await connection.output.ping({ echo: 'Hello World!' });
+      await waitFor(() => expect(got[got.length - 1]).toBe('pong response: PONG Hello World!'));
+
+      expect(true).toBe(true);
+    } finally {
+      connection.ws.close();
+    }
+  });
+});
