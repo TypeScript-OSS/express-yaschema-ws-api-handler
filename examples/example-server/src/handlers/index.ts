@@ -4,7 +4,4 @@ import type { WithWebsocketMethod } from 'express-ws';
 import * as ping from './ping';
 import * as stream from './stream';
 
-export const register = (app: Express & WithWebsocketMethod) => {
-  ping.register(app);
-  stream.register(app);
-};
+export const register = async (app: Express & WithWebsocketMethod) => Promise.all([ping.register(app), stream.register(app)]);

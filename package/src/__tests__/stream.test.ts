@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import type { WithWebsocketMethod } from 'express-ws';
 import expressWs from 'express-ws';
+import { finalizeApiHandlerRegistrations } from 'express-yaschema-api-handler';
 import type * as http from 'http';
 import WebSocket from 'ws';
 import { schema } from 'yaschema';
@@ -60,6 +61,8 @@ describe('Stream', () => {
             hello: async ({ output }) => output.hello({ body: 'world' })
           }
         );
+
+        finalizeApiHandlerRegistrations();
 
         try {
           server = app.listen(port, () => {
