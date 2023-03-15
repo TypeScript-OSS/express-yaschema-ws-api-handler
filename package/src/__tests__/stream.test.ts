@@ -1,4 +1,3 @@
-import { waitFor } from '@testing-library/react';
 import bodyParser from 'body-parser';
 import express from 'express';
 import type { WithWebsocketMethod } from 'express-ws';
@@ -12,6 +11,7 @@ import { makeWsApi } from 'yaschema-ws-api';
 import type { CommonWebSocket } from 'yaschema-ws-api-client';
 import { apiWs, setWebSocket } from 'yaschema-ws-api-client';
 
+import { waitFor } from '../__test_dependency__/wait-for';
 import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler';
 
 const port = Number.parseInt(process.env.PORT ?? '8088');
