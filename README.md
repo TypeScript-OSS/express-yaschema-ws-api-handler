@@ -56,9 +56,9 @@ The options object passed to `registerWsApiHandler` lets you override the valida
 
 Thanks for checking it out.  Feel free to create issues or otherwise provide feedback.
 
-[API Docs](https://passfolio.github.io/express-yaschema-ws-api-handler/)
+[API Docs](https://typescript-oss.github.io/express-yaschema-ws-api-handler/)
 
-Be sure to check out our other [Open Source @ Passfolio](https://github.com/Passfolio) projects as well.
+Be sure to check out our other [TypeScript OSS](https://github.com/TypeScript-OSS) projects as well.
 
 <!-- Definitions -->
 
