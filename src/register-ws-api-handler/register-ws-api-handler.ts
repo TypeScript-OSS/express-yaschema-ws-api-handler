@@ -14,6 +14,7 @@ import { triggerOnRequestValidationErrorHandler } from '../config/on-request-val
 import { getDefaultRequestValidationMode, getDefaultResponseValidationMode } from '../config/validation-mode';
 import { getWsApiHandlerWrapper } from '../config/ws-api-handler-wrapper';
 import { getUrlPathnameUsingRouteType } from '../internal-utils/get-url-pathname';
+import { blockWsHandlerShutdownUntilComplete, isShuttingDown, onDidShutdown } from '../shutdown';
 import type { GenericWsApiRequestHandler } from './types/GenericWsApiRequestHandler';
 import type { WsApiEventHandlers } from './types/WsApiEventHandlers';
 import type { WsApiRequestHandler } from './types/WsApiRequestHandler';
@@ -78,7 +79,11 @@ export const registerWsApiHandler = <
       ws.close();
     };
 
+    const removeOnDidShutdown = onDidShutdown(() => ws.close(1012)); // 1012 = Service is restarting -- ref https://github.com/Luka967/websocket-close-codes
+
     const onClose = async (_code: number, _reason: string) => {
+      removeOnDidShutdown();
+
       ws.off('error', onError);
       ws.off('close', onClose);
       ws.off('message', onMessage);
@@ -94,30 +99,35 @@ export const registerWsApiHandler = <
             return;
           }
 
-          const commandSerializationResult = await responseCommand.serializeAsync(value, { validation: responseValidationMode });
-          if (commandSerializationResult.error !== undefined) {
-            if (responseValidationMode === 'hard') {
-              triggerOnCommandResponseValidationErrorHandler({
-                api: api as any as GenericWsApi,
-                command: responseCommandName,
-                res: value,
-                invalidPart: 'body',
-                validationError: commandSerializationResult.error
-              });
+          return blockWsHandlerShutdownUntilComplete(async () => {
+            const commandSerializationResult = await responseCommand.serializeAsync(value, { validation: responseValidationMode });
+            if (commandSerializationResult.error !== undefined) {
+              if (responseValidationMode === 'hard') {
+                triggerOnCommandResponseValidationErrorHandler({
+                  api: api as any as GenericWsApi,
+                  command: responseCommandName,
+                  res: value,
+                  invalidPart: 'body',
+                  validationError: commandSerializationResult.error
+                });
+                return;
+              }
+            }
+
+            const genericResponse = genericCommandSchema.serialize(
+              { command: responseCommandName, body: commandSerializationResult.serialized },
+              { okToMutateInputValue: true, validation: 'hard' }
+            );
+            if (genericResponse.error !== undefined) {
+              console.warn(
+                `Failed to serialize response for command ${responseCommandName}, which shouldn't happen:`,
+                genericResponse.error
+              );
               return;
             }
-          }
 
-          const genericResponse = genericCommandSchema.serialize(
-            { command: responseCommandName, body: commandSerializationResult.serialized },
-            { okToMutateInputValue: true, validation: 'hard' }
-          );
-          if (genericResponse.error !== undefined) {
-            console.warn(`Failed to serialize response for command ${responseCommandName}, which shouldn't happen:`, genericResponse.error);
-            return;
-          }
-
-          ws.send(JSON.stringify(genericResponse.serialized));
+            ws.send(JSON.stringify(genericResponse.serialized));
+          });
         };
         return out;
       },
@@ -128,91 +138,97 @@ export const registerWsApiHandler = <
     const wrappedRequestHandlers: Partial<WsApiRequestHandlers<RequestCommandsT, ResponseCommandsT, QueryT>> = {};
 
     const onMessage = async (data: WebSocket.Data) => {
-      eventHandlers.onMessage?.({ express, connectionId, query, message: data, output });
-
-      if (typeof data !== 'string') {
-        return;
+      if (isShuttingDown()) {
+        return; // Ignoring incoming messages while shutting down
       }
 
-      let json: any;
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        json = JSON.parse(data);
-      } catch (e) {
-        if (e instanceof Error) {
-          eventHandlers.onError?.({ express, connectionId, query, error: e, output });
+      return blockWsHandlerShutdownUntilComplete(async () => {
+        eventHandlers.onMessage?.({ express, connectionId, query, message: data, output });
+
+        if (typeof data !== 'string') {
+          return;
         }
-        return;
-      }
 
-      const genericRequest = genericCommandSchema.deserialize(json, { okToMutateInputValue: true, validation: 'hard' });
-      if (genericRequest.error !== undefined) {
-        eventHandlers.onError?.({ express, connectionId, query, error: new Error(genericRequest.error), output });
-        return;
-      }
+        let json: any;
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          json = JSON.parse(data);
+        } catch (e) {
+          if (e instanceof Error) {
+            eventHandlers.onError?.({ express, connectionId, query, error: e, output });
+          }
+          return;
+        }
 
-      const requestCommandName = genericRequest.deserialized.command as keyof RequestCommandsT & string;
-      const requestCommand = api.schemas.requests[requestCommandName];
-      if (requestCommand === undefined) {
-        eventHandlers.onError?.({
-          express,
-          connectionId,
-          query,
-          error: new Error(`No definition found for command ${requestCommandName}`),
-          output
-        });
-        return;
-      }
+        const genericRequest = genericCommandSchema.deserialize(json, { okToMutateInputValue: true, validation: 'hard' });
+        if (genericRequest.error !== undefined) {
+          eventHandlers.onError?.({ express, connectionId, query, error: new Error(genericRequest.error), output });
+          return;
+        }
 
-      // Lazily wrapping commands as they're used the first time
-      let wrappedRequestHandler = wrappedRequestHandlers[requestCommandName];
-      if (wrappedRequestHandler === undefined) {
-        const requestHandler = requestHandlers[requestCommandName];
-        if (requestHandler === undefined) {
+        const requestCommandName = genericRequest.deserialized.command as keyof RequestCommandsT & string;
+        const requestCommand = api.schemas.requests[requestCommandName];
+        if (requestCommand === undefined) {
           eventHandlers.onError?.({
             express,
             connectionId,
             query,
-            error: new Error(`No request handler found for command ${requestCommandName}`),
+            error: new Error(`No definition found for command ${requestCommandName}`),
             output
           });
           return;
         }
 
-        wrappedRequestHandler = asyncHandlerWrapper(requestHandler as GenericWsApiRequestHandler) as WsApiRequestHandler<
-          RequestCommandsT,
-          ResponseCommandsT,
-          typeof requestCommandName,
-          QueryT
-        >;
-        wrappedRequestHandlers[requestCommandName] = wrappedRequestHandler;
-      }
+        // Lazily wrapping commands as they're used the first time
+        let wrappedRequestHandler = wrappedRequestHandlers[requestCommandName];
+        if (wrappedRequestHandler === undefined) {
+          const requestHandler = requestHandlers[requestCommandName];
+          if (requestHandler === undefined) {
+            eventHandlers.onError?.({
+              express,
+              connectionId,
+              query,
+              error: new Error(`No request handler found for command ${requestCommandName}`),
+              output
+            });
+            return;
+          }
 
-      const commandDeserializationResult = await requestCommand.deserializeAsync(genericRequest.deserialized.body, {
-        okToMutateInputValue: true,
-        validation: requestValidationMode
-      });
-      if (commandDeserializationResult.error !== undefined) {
-        triggerOnCommandRequestValidationErrorHandler({
-          api: api as any as GenericWsApi,
-          command: requestCommandName,
-          req: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
-          rawData: data,
-          invalidPart: 'body',
-          validationError: commandDeserializationResult.error
-        });
-        if (requestValidationMode === 'hard') {
-          return;
+          wrappedRequestHandler = asyncHandlerWrapper(requestHandler as GenericWsApiRequestHandler) as WsApiRequestHandler<
+            RequestCommandsT,
+            ResponseCommandsT,
+            typeof requestCommandName,
+            QueryT
+          >;
+          wrappedRequestHandlers[requestCommandName] = wrappedRequestHandler;
         }
-      }
 
-      await wrappedRequestHandler({
-        express,
-        connectionId,
-        query,
-        input: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
-        output,
-        extras: {}
+        const commandDeserializationResult = await requestCommand.deserializeAsync(genericRequest.deserialized.body, {
+          okToMutateInputValue: true,
+          validation: requestValidationMode
+        });
+        if (commandDeserializationResult.error !== undefined) {
+          triggerOnCommandRequestValidationErrorHandler({
+            api: api as any as GenericWsApi,
+            command: requestCommandName,
+            req: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
+            rawData: data,
+            invalidPart: 'body',
+            validationError: commandDeserializationResult.error
+          });
+          if (requestValidationMode === 'hard') {
+            return;
+          }
+        }
+
+        await wrappedRequestHandler({
+          express,
+          connectionId,
+          query,
+          input: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
+          output,
+          extras: {}
+        });
       });
     };
 

@@ -13,6 +13,7 @@ import { apiWs, setWebSocket } from 'yaschema-ws-api-client';
 
 import { waitFor } from '../__test_dependency__/wait-for';
 import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler';
+import { shutdownWsHandlers, unshutdownWsHandlers } from '../shutdown';
 
 const port = Number.parseInt(process.env.PORT ?? '8088');
 
@@ -84,17 +85,19 @@ describe('Stream', () => {
 
   afterAll(
     async () =>
-      new Promise<void>((resolve, reject) => {
+      new Promise<void>((resolve) => {
         if (server === undefined) {
           return resolve();
         }
 
-        server.close((error) => {
-          if (error !== undefined) {
-            reject(error);
-          } else {
-            resolve();
-          }
+        const shutdownWsHandlersPromise = shutdownWsHandlers();
+
+        server.close(async () => {
+          await shutdownWsHandlersPromise;
+
+          unshutdownWsHandlers();
+
+          resolve();
         });
       })
   );
