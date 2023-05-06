@@ -242,7 +242,7 @@ export const registerWsApiHandler = <
   // Note: this strips any host-related info and doesn't check whether this server is the "right" server to handle these requests
   const relativizedUrl = getUrlPathnameUsingRouteType(api.routeType, api.url);
 
-  registerApiHandler('ws', undefined, relativizedUrl, () => {
+  registerApiHandler(api, 'ws', undefined, relativizedUrl, () => {
     app.ws(relativizedUrl, expressWsHandler);
   });
 };
