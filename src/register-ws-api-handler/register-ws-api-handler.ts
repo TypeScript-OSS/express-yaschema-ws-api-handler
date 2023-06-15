@@ -116,7 +116,7 @@ export const registerWsApiHandler = <
 
             const genericResponse = genericCommandSchema.serialize(
               { command: responseCommandName, body: commandSerializationResult.serialized },
-              { okToMutateInputValue: true, validation: 'hard' }
+              { validation: 'hard' }
             );
             if (genericResponse.error !== undefined) {
               console.warn(
@@ -160,7 +160,7 @@ export const registerWsApiHandler = <
           return;
         }
 
-        const genericRequest = genericCommandSchema.deserialize(json, { okToMutateInputValue: true, validation: 'hard' });
+        const genericRequest = genericCommandSchema.deserialize(json, { validation: 'hard' });
         if (genericRequest.error !== undefined) {
           eventHandlers.onError?.({ express, connectionId, query, error: new Error(genericRequest.error), output });
           return;
@@ -204,7 +204,6 @@ export const registerWsApiHandler = <
         }
 
         const commandDeserializationResult = await requestCommand.deserializeAsync(genericRequest.deserialized.body, {
-          okToMutateInputValue: true,
           validation: requestValidationMode
         });
         if (commandDeserializationResult.error !== undefined) {
