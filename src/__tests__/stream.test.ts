@@ -87,7 +87,8 @@ describe('Stream', () => {
     async () =>
       new Promise<void>((resolve) => {
         if (server === undefined) {
-          return resolve();
+          setTimeout(resolve, 0);
+          return;
         }
 
         const shutdownWsHandlersPromise = shutdownWsHandlers();
@@ -97,7 +98,7 @@ describe('Stream', () => {
 
           unshutdownWsHandlers();
 
-          resolve();
+          setTimeout(resolve, 0);
         });
       })
   );
