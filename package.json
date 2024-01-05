@@ -1,6 +1,6 @@
 {
   "name": "express-yaschema-ws-api-handler",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Express handler support for yaschema-ws-api",
   "keywords": [
     "schema",
@@ -31,11 +31,11 @@
   },
   "dependencies": {
     "express-ws": "^5.0.2",
-    "express-yaschema-api-handler": "^2.2.5",
+    "express-yaschema-api-handler": "^2.2.6",
     "uuid": "^9.0.1",
-    "yaschema": "^3.1.0",
-    "yaschema-api": "^3.4.0",
-    "yaschema-ws-api": "^2.2.0"
+    "yaschema": "^3.2.0",
+    "yaschema-api": "^3.4.1",
+    "yaschema-ws-api": "^2.2.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -44,8 +44,8 @@
     "@types/lodash": "4.14.202",
     "@types/multer": "^1.4.11",
     "@types/uuid": "^9.0.7",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
     "eslint": "8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -60,8 +60,8 @@
     "prettier": "3.1.1",
     "trash-cli": "5.0.0",
     "ts-jest": "^29.1.1",
-    "typedoc": "^0.25.4",
+    "typedoc": "^0.25.6",
     "typescript": "5.3.3",
-    "yaschema-ws-api-client": "^2.1.5"
+    "yaschema-ws-api-client": "^2.1.6"
   }
 }
