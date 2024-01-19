@@ -1958,9 +1958,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.601:
-  version "1.4.638"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.638.tgz#5564b750c2ceb64c0d2ef5a22b0748f63b66e0a3"
-  integrity sha512-gpmbAG2LbfPKcDaL5m9IKutKjUx4ZRkvGNkgL/8nKqxkXsBVYykVULboWlqCrHsh3razucgDJDuKoWJmGPdItA==
+  version "1.4.639"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.639.tgz#c6f9cc685f9efb2980d2cfc95a27f8142c9adf28"
+  integrity sha512-CkKf3ZUVZchr+zDpAlNLEEy2NJJ9T64ULWaDgy3THXXlPVPkLu3VOs9Bac44nebVtdwl2geSj6AxTtGDOxoXhg==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -2351,10 +2351,10 @@ express-ws@^5.0.2:
   dependencies:
     ws "^7.4.6"
 
-express-yaschema-api-handler@^2.2.9:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/express-yaschema-api-handler/-/express-yaschema-api-handler-2.2.9.tgz#1d55a133593aa07456993f6a3c78497dcd3c3e8f"
-  integrity sha512-d+PX9MhphH0E+8apaiEwUP4TZchg4LBFJGcbH8LfaQYdjQmWEVFLgocjgsI2rxzBy854g3pfmJdsejkt6MSudQ==
+express-yaschema-api-handler@^2.2.10:
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/express-yaschema-api-handler/-/express-yaschema-api-handler-2.2.10.tgz#e25782df9478b11806abfb16362dc7b828f0fec3"
+  integrity sha512-dRzKxaqofSoxpEtYWCtqOKQIVQ5WUVqFogz06pF8nPeBM56jwvKdS4/06Lk5Z/nPCFKFwzklGi6NWrHIjXGnTA==
   dependencies:
     http-status-codes "^2.3.0"
     multer "^1.4.5-lts.1"
