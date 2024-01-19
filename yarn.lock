@@ -2351,10 +2351,10 @@ express-ws@^5.0.2:
   dependencies:
     ws "^7.4.6"
 
-express-yaschema-api-handler@^2.2.10:
-  version "2.2.10"
-  resolved "https://registry.yarnpkg.com/express-yaschema-api-handler/-/express-yaschema-api-handler-2.2.10.tgz#e25782df9478b11806abfb16362dc7b828f0fec3"
-  integrity sha512-dRzKxaqofSoxpEtYWCtqOKQIVQ5WUVqFogz06pF8nPeBM56jwvKdS4/06Lk5Z/nPCFKFwzklGi6NWrHIjXGnTA==
+express-yaschema-api-handler@^2.2.11:
+  version "2.2.11"
+  resolved "https://registry.yarnpkg.com/express-yaschema-api-handler/-/express-yaschema-api-handler-2.2.11.tgz#dd1389287b39cb1718eff421d7a25ea79518e977"
+  integrity sha512-/N48A4S1w+YZfH2coENFnV5yzqQzjFA2ZOeRPafg6QTFF2/D6/o6X1UvTQ1YHJOw3IIbTDI7PqWgfP9SCxpJXg==
   dependencies:
     http-status-codes "^2.3.0"
     multer "^1.4.5-lts.1"

@@ -1,6 +1,6 @@
 {
   "name": "express-yaschema-ws-api-handler",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "description": "Express handler support for yaschema-ws-api",
   "keywords": [
     "schema",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "express-ws": "^5.0.2",
-    "express-yaschema-api-handler": "^2.2.10",
+    "express-yaschema-api-handler": "^2.2.11",
     "uuid": "^9.0.1",
     "yaschema": "^3.3.0",
     "yaschema-api": "^3.4.2",
