@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { sleep } from './sleep';
+import { sleep } from './sleep.js';
 
 export const waitFor = async (checker: () => Promise<void> | void) => {
   while (true) {

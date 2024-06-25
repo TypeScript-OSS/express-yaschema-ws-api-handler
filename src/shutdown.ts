@@ -1,4 +1,4 @@
-import { DoubleLinkedList } from './internal-types/DoubleLinkedList';
+import { DoubleLinkedList } from 'doublell';
 
 let globalBlockedShutdownCount = 0;
 let globalIsShuttingDown = false;

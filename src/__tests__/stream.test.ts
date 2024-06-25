@@ -11,9 +11,9 @@ import { makeWsApi } from 'yaschema-ws-api';
 import type { CommonWebSocket } from 'yaschema-ws-api-client';
 import { apiWs, setWebSocket } from 'yaschema-ws-api-client';
 
-import { waitFor } from '../__test_dependency__/wait-for';
-import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler';
-import { shutdownWsHandlers, unshutdownWsHandlers } from '../shutdown';
+import { waitFor } from '../__test_dependency__/wait-for.js';
+import { registerWsApiHandler } from '../register-ws-api-handler/register-ws-api-handler.js';
+import { shutdownWsHandlers, unshutdownWsHandlers } from '../shutdown.js';
 
 const port = Number.parseInt(process.env.PORT ?? '8088');
 

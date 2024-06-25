@@ -1,2 +1,2 @@
-export * from './register-ws-api-handler';
-export * from './types/exports';
+export * from './register-ws-api-handler.js';
+export * from './types/exports.js';
