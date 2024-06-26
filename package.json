@@ -1,6 +1,6 @@
 {
   "name": "express-yaschema-ws-api-handler",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Express handler support for yaschema-ws-api",
   "keywords": [
     "schema",
@@ -30,13 +30,13 @@
     "test:unit-tests": "yarn test:unit-tests: src"
   },
   "dependencies": {
-    "doublell": "1.0.0",
+    "doublell": "1.0.1",
     "express-ws": "^5.0.2",
-    "express-yaschema-api-handler": "^2.6.0",
+    "express-yaschema-api-handler": "^2.6.1",
     "uuid": "^10.0.0",
-    "yaschema": "^3.5.0",
-    "yaschema-api": "^3.6.0",
-    "yaschema-ws-api": "^2.3.0"
+    "yaschema": "^3.5.1",
+    "yaschema-api": "^3.6.1",
+    "yaschema-ws-api": "^2.3.1"
   },
   "devDependencies": {
     "@eslint/compat": "1.1.0",
@@ -66,6 +66,6 @@
     "ts-jest": "^29.1.5",
     "typedoc": "^0.26.2",
     "typescript": "5.5.2",
-    "yaschema-ws-api-client": "^2.2.1"
+    "yaschema-ws-api-client": "^2.2.2"
   }
 }
