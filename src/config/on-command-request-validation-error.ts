@@ -9,6 +9,7 @@ interface OnCommandRequestValidationErrorHandlerArgs {
   rawData: WebSocket.Data;
   invalidPart: 'body';
   validationError: string;
+  validationErrorPath: string;
 }
 
 let globalOnCommandRequestValidationErrorHandler: (args: OnCommandRequestValidationErrorHandlerArgs) => void = () => {};

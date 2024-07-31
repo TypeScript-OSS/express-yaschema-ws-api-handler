@@ -64,7 +64,8 @@ export const registerWsApiHandler = <
           api: api as any as GenericWsApi,
           expressReq: express.req,
           invalidPart: 'query',
-          validationError: reqQuery.error
+          validationError: reqQuery.error,
+          validationErrorPath: reqQuery.errorPath
         });
         if (requestValidationMode === 'hard') {
           ws.close(1008); // Policy violation (closest thing to bad request)
@@ -108,7 +109,8 @@ export const registerWsApiHandler = <
                   command: responseCommandName,
                   res: value,
                   invalidPart: 'body',
-                  validationError: commandSerializationResult.error
+                  validationError: commandSerializationResult.error,
+                  validationErrorPath: commandSerializationResult.errorPath
                 });
                 return;
               }
@@ -213,7 +215,8 @@ export const registerWsApiHandler = <
             req: commandDeserializationResult.deserialized as RequestCommandsT[typeof requestCommandName]['valueType'],
             rawData: data,
             invalidPart: 'body',
-            validationError: commandDeserializationResult.error
+            validationError: commandDeserializationResult.error,
+            validationErrorPath: commandDeserializationResult.errorPath
           });
           if (requestValidationMode === 'hard') {
             return;

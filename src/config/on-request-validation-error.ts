@@ -6,6 +6,7 @@ interface OnRequestValidationErrorHandlerArgs {
   expressReq: Request;
   invalidPart: 'query';
   validationError: string;
+  validationErrorPath: string;
 }
 
 let globalOnRequestValidationErrorHandler: (args: OnRequestValidationErrorHandlerArgs) => void = () => {};

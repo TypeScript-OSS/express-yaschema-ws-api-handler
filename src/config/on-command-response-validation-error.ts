@@ -7,6 +7,7 @@ interface OnCommandResponseValidationErrorHandlerArgs {
   res: AnyBody;
   invalidPart: 'body';
   validationError: string;
+  validationErrorPath: string;
 }
 
 let globalOnCommandResponseValidationErrorHandler: (args: OnCommandResponseValidationErrorHandlerArgs) => void = () => {};
