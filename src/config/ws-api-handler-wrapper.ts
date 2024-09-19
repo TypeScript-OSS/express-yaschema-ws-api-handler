@@ -7,7 +7,7 @@ let globalWsApiHandlerWrapper: WsApiHandlerWrapper =
   async (fwd) => {
     try {
       return await handler(fwd);
-    } catch (e) {
+    } catch (_e) {
       // Catching and ignoring by default
     }
   };

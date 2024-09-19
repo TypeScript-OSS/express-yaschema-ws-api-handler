@@ -72,6 +72,7 @@ describe('Stream', () => {
             resolve();
           });
         } catch (e) {
+          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(e);
         }
       })

@@ -7,7 +7,7 @@ export const waitFor = async (checker: () => Promise<void> | void) => {
     try {
       await checker();
       return;
-    } catch (e) {
+    } catch (_e) {
       // Ignoring
       await sleep(10);
     }
