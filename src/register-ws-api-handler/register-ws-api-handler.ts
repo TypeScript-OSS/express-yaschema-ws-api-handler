@@ -4,8 +4,9 @@ import { registerApiHandler } from 'express-yaschema-api-handler';
 import { v4 as uuid } from 'uuid';
 import WebSocket from 'ws';
 import type { Schema, ValidationMode } from 'yaschema';
-import { schema } from 'yaschema';
-import type { AnyQuery, GenericWsApi, WsApi } from 'yaschema-ws-api';
+import type { AnyQuery } from 'yaschema-api';
+import { anyReqQuerySchema } from 'yaschema-api';
+import type { GenericWsApi, WsApi } from 'yaschema-ws-api';
 import { genericCommandSchema } from 'yaschema-ws-api';
 
 import { triggerOnCommandRequestValidationErrorHandler } from '../config/on-command-request-validation-error.js';
@@ -20,16 +21,6 @@ import type { WsApiEventHandlers } from './types/WsApiEventHandlers';
 import type { WsApiRequestHandler } from './types/WsApiRequestHandler';
 import type { WsApiRequestHandlers } from './types/WsApiRequestHandlers';
 import type { WsApiResponders } from './types/WsApiResponders';
-
-const anyStringSerializableTypeSchema = schema.oneOf3(
-  schema.number().setAllowedSerializationForms(['number', 'string']),
-  schema.boolean().setAllowedSerializationForms(['boolean', 'string']),
-  schema.string()
-);
-
-const anyReqQuerySchema = schema
-  .record(schema.string(), schema.oneOf(anyStringSerializableTypeSchema, schema.array({ items: anyStringSerializableTypeSchema })))
-  .optional();
 
 export interface WsApiHandlerOptions {
   requestValidationMode?: ValidationMode;

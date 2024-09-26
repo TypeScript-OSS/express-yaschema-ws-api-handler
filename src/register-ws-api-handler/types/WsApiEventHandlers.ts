@@ -1,4 +1,5 @@
-import type { AnyCommands, AnyQuery } from 'yaschema-ws-api';
+import type { AnyQuery } from 'yaschema-api';
+import type { AnyCommands } from 'yaschema-ws-api';
 
 import type { WsApiConnectionChangeHandler } from './WsApiConnectionChangeHandler';
 import type { WsApiErrorHandler } from './WsApiErrorHandler';

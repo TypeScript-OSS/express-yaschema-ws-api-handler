@@ -1,5 +1,6 @@
 import type WebSocket from 'ws';
-import type { AnyBody, GenericWsApi } from 'yaschema-ws-api';
+import type { AnyBody } from 'yaschema-api';
+import type { GenericWsApi } from 'yaschema-ws-api';
 
 interface OnCommandRequestValidationErrorHandlerArgs {
   api: GenericWsApi;

@@ -1,4 +1,5 @@
-import type { AnyBody, GenericWsApi } from 'yaschema-ws-api';
+import type { AnyBody } from 'yaschema-api';
+import type { GenericWsApi } from 'yaschema-ws-api';
 
 interface OnCommandResponseValidationErrorHandlerArgs {
   api: GenericWsApi;

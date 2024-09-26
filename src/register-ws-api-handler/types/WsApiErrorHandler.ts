@@ -1,6 +1,7 @@
 import type { NextFunction, Request } from 'express';
 import type WebSocket from 'ws';
-import type { AnyCommands, AnyQuery } from 'yaschema-ws-api';
+import type { AnyQuery } from 'yaschema-api';
+import type { AnyCommands } from 'yaschema-ws-api';
 
 import type { WsApiResponders } from './WsApiResponders';
 

@@ -1,5 +1,5 @@
 import type { Schema } from 'yaschema';
-import type { AnyQuery } from 'yaschema-ws-api';
+import type { AnyQuery } from 'yaschema-api';
 
 import type { WsApiRequestHandler } from './WsApiRequestHandler';
 
