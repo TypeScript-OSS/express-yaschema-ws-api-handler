@@ -107,7 +107,7 @@ export const registerWsApiHandler = <
               }
             }
 
-            const genericResponse = genericCommandSchema.serialize(
+            const genericResponse = await genericCommandSchema.serializeAsync(
               { command: responseCommandName, body: commandSerializationResult.serialized },
               { validation: 'hard' }
             );
@@ -153,7 +153,7 @@ export const registerWsApiHandler = <
           return;
         }
 
-        const genericRequest = genericCommandSchema.deserialize(json, { validation: 'hard' });
+        const genericRequest = await genericCommandSchema.deserializeAsync(json, { validation: 'hard' });
         if (genericRequest.error !== undefined) {
           eventHandlers.onError?.({ express, connectionId, query, error: new Error(genericRequest.error), output });
           return;
