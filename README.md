@@ -52,6 +52,10 @@ registerWsApiHandler(
 
 The options object passed to `registerWsApiHandler` lets you override the validation mode and/or specify middleware.
 
+### Initializing Multiple Express Servers Simultaneously
+
+If you happen to be potentially initializing multiple Express servers simultaneously (e.g. on different ports) and you're using Yaschema API for more than one of these servers, you will need to extend your `Express` instance to support `YaschemaApiExpressContextAccessor` by calling `addYaschemaApiExpressContextAccessorToExpress(express, context)` before calling `registerWsApiHandler` -- where `context` should be unique for each Express server, and can be created using `makeYaschemaApiExpressContext`.
+
 ## Thanks
 
 Thanks for checking it out.  Feel free to create issues or otherwise provide feedback.

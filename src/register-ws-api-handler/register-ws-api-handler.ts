@@ -1,5 +1,6 @@
 import type { Express, NextFunction, Request } from 'express';
 import type { WithWebsocketMethod } from 'express-ws';
+import type { YaschemaApiExpressContextAccessor } from 'express-yaschema-api-handler';
 import { registerApiHandler } from 'express-yaschema-api-handler';
 import { v4 as uuid } from 'uuid';
 import WebSocket from 'ws';
@@ -32,7 +33,7 @@ export const registerWsApiHandler = <
   ResponseCommandsT extends Record<string, Schema>,
   QueryT extends AnyQuery
 >(
-  app: Express & WithWebsocketMethod,
+  app: Express & YaschemaApiExpressContextAccessor & WithWebsocketMethod,
   api: WsApi<RequestCommandsT, ResponseCommandsT, QueryT>,
   {
     requestValidationMode = getDefaultRequestValidationMode(),
@@ -235,7 +236,14 @@ export const registerWsApiHandler = <
   // Note: this strips any host-related info and doesn't check whether this server is the "right" server to handle these requests
   const relativizedUrl = getUrlPathnameUsingRouteType(api.routeType, api.url);
 
-  registerApiHandler(api, 'ws', undefined, relativizedUrl, () => {
-    app.ws(relativizedUrl, expressWsHandler);
+  registerApiHandler({
+    api,
+    protocol: 'ws',
+    methodName: undefined,
+    relativeUrl: relativizedUrl,
+    finalizer: () => {
+      app.ws(relativizedUrl, expressWsHandler);
+    },
+    context: app.getYaschemaApiExpressContext?.()
   });
 };
