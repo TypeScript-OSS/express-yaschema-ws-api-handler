@@ -38,7 +38,7 @@
     "doublell": "^2.0.1",
     "express-ws": "^5.0.2",
     "express-yaschema-api-handler": "^4.2.5",
-    "uuid": "^13.0.0",
+    "uuid": "^11.1.0",
     "yaschema": "^5.2.2",
     "yaschema-api": "^5.0.5",
     "yaschema-ws-api": "^4.0.3"
